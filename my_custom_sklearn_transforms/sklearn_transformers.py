@@ -13,5 +13,9 @@ class DropColumns(BaseEstimator, TransformerMixin):
         # Primeiro realizamos a cópia do dataframe 'X' de entrada
         data = X.copy()
         # Retornamos um novo dataframe sem as colunas indesejadas
+        data.drop(labels=self.columns, axis='columns', inplace = True)        
         data.where(data["H_AULA_PRES"] > 0, inplace = True)
-        return data.drop(labels=self.columns, axis='columns')
+        data.dropna(axis='index', how='any', subset=['NOTA_DE', 'NOTA_EM', 'NOTA_MF', 'NOTA_GO','H_AULA_PRES'], inplace = True)
+
+        return pd.get_dummies(data, columns=['REPROVACOES_DE', 'REPROVACOES_EM',
+       'REPROVACOES_MF', 'REPROVACOES_GO','NOTA_DE', 'NOTA_EM', 'NOTA_MF', 'NOTA_GO', 'H_AULA_PRES'])
